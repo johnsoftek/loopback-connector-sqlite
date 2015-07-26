@@ -18,13 +18,3 @@ global.getDataSource = global.getSchema = function (customConfig) {
 
  return db;
 };
-
-global.getDataSource2 = function (customConfig) {
- var db = new DataSource(require('../'), customConfig || config.test2);
-
-  db.log = function (msg) {
-   console.log(msg);
-  };
-
- return db;
-};

@@ -3,10 +3,6 @@
     "test": {
       "file_name": "test.sqlite3",
       "debug": false
-    },
-    "test2": {
-      "file_name": "test2.sqlite3",
-      "debug": false
     }
   }
 }
