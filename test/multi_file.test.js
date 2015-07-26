@@ -1,11 +1,11 @@
 /**
- * Created by tushar-chauhan on 13-Mar-2015
+ * Created by johnsoftek on 22 Jul 2015
  */
 
 require('./init');
 var expect = require('chai').expect;
 
-var User, User2, db, db2;
+var Multi1, Multi2, db, db2;
 
 describe("SQLite multi-file test", function(){
 
@@ -13,23 +13,27 @@ describe("SQLite multi-file test", function(){
     db  = getDataSource();
     db2 = getDataSource2();
 
-    User = db.define('User', {
+    Multi1 = db.define('Multi1', {
       id: {type: Number, id: true},
       name: { type: String },
       email: { type: String }
     });
-    User2 = db2.define('User2', {
+    Multi2 = db2.define('Multi2', {
       id: {type: Number, id: true},
       new_name: { type: String }
     });
 
   });
 
-  it('should allow multiple database files', function (done) {
+  it('should create models attached to different datasources in their respective databases', function(done) {
 
-    db.automigrate('User', function () {
-      db2.automigrate('User2', function () {
-        done();
+    db.automigrate('Multi1', function () {
+      db2.automigrate('Multi2', function () {
+        db2.connector.query("SELECT name FROM sqlite_master where type = 'table'", function(err,tables) {
+          expect(tables).to.include({ name: 'Multi2' })
+          expect(tables).to.not.include({ name: 'Multi1' })
+          done();
+        })
       });
     });
 
